@@ -1,0 +1,71 @@
+/* Header styles */
+header {
+  background-color: #F6F6F6;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 10vw, 144px) 0 clamp(20px, 5vw, 72px);
+  position: fixed; /* Make header sticky */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+    
+header img {
+  width: clamp(40px, 8vw, 60px);
+  margin-right: 6px;
+}
+
+.nav-section {
+  display: flex;
+  gap: clamp(20px, 5vw, 72px);
+}
+
+h1 {
+  color: black;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 900;
+  display: flex;
+  font-family: 'Montserrat';
+  margin: 0;
+}
+
+.extra-thick {
+  -webkit-text-stroke: 1px;
+}
+
+.cavi-text {
+  color: black;
+}
+
+.check-text {
+  color: #1e3a8a;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  text-decoration: none;
+  color: black;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.nav-link.active {
+  color: #007bff;
+  font-weight: bold;
+}

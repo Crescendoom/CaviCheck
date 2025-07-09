@@ -1,0 +1,38 @@
+/* Footer styles */
+footer {
+  background-color: #E8E8F0;
+  padding: 15px 0;
+  text-align: right;
+  width: 100%;
+}
+
+footer p {
+  margin: 0;
+  padding-right: 40px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  footer {
+    padding: 12px 0;
+  }
+  
+  footer p {
+    padding-right: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  footer {
+    padding: 10px 0;
+    text-align: center; /* Center on mobile */
+  }
+  
+  footer p {
+    padding-right: 0;
+    font-size: 0.75rem;
+  }
+}

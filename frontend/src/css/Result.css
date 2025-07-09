@@ -1,0 +1,369 @@
+.caries-result {
+  height: 80vh;
+  background-color: white;
+  padding-top: 0; 
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  margin-top: 80px; 
+  flex: 1; 
+}
+
+.result-container {
+  max-width: 95vw;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.result-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  max-width: 900px;
+  height: fit-content;
+}
+
+/* Left side - Image section */
+.image-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.image-container {
+  position: relative;
+  background-color: white;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 16px 16px 32px rgba(30, 58, 138, 2);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xray-image {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 200px); 
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+  filter: contrast(1.1) brightness(1.05);
+}
+
+.detection-overlay {
+  position: absolute;
+  border: 2px solid #dc2626;
+  background-color: rgba(220, 38, 38, 0.2);
+  border-radius: 4px;
+  pointer-events: none;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    border-color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.2);
+  }
+  50% {
+    border-color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.3);
+  }
+  100% {
+    border-color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.2);
+  }
+}
+
+/* Right side - Details section */
+.details-section {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 350px;
+}
+
+.result-header {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.result-title {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-family: "Overpass", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  color: #1e3a8a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.result-description {
+  margin-bottom: 1.2rem;
+}
+
+.result-description p {
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  line-height: 1.4;
+  color: #6b7280;
+  margin: 0;
+  text-align: left;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.download-btn {
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  background-color: #1e3a8a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
+}
+
+.upload-again-btn {
+  background-color: white;
+  color: #374151;
+  border: 2px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.upload-again-btn:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading container */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.loading-container h2 {
+  color: #6b7280;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 15px;
+  }
+  
+  .result-content {
+    gap: 1.8rem;
+    max-width: 800px;
+  }
+  
+  .image-container {
+    max-width: 350px;
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 220px);
+  }
+}
+
+@media (max-width: 768px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 10px;
+  }
+  
+  .result-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+    max-width: 500px;
+  }
+  
+  .image-container {
+    max-width: 90vw;
+    margin-bottom: 0;
+    box-shadow: 0 5px 18px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 250px);
+  }
+  
+  .details-section {
+    max-width: 90vw;
+    text-align: center;
+  }
+  
+  .result-header {
+    text-align: center;
+  }
+  
+  .result-description p {
+    text-align: center;
+  }
+  
+  .action-buttons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 8px;
+  }
+  
+  .result-content {
+    gap: 1.2rem;
+    max-width: 95vw;
+  }
+  
+  .image-container {
+    padding: 0.8rem;
+    max-width: 95vw;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 280px);
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .download-btn,
+  .upload-again-btn {
+    width: 150px;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 5px;
+  }
+  
+  .result-content {
+    gap: 1rem;
+    max-width: 98vw;
+  }
+  
+  .image-container {
+    padding: 0.6rem;
+    box-shadow: 0 3px 12px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 320px);
+  }
+  
+  .download-btn,
+  .upload-again-btn {
+    width: 130px;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Landscape images specific adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 10px;
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 180px);
+  }
+  
+  .result-content {
+    gap: 1rem;
+  }
+  
+  .image-container {
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+  }
+  
+  .result-title {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  }
+  
+  .result-description p {
+    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+  }
+}

@@ -1,0 +1,45 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background-color: white;
+  color: black;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 80px;
+}
+
+.main-content section {
+
+  display: flex;
+  flex-direction: column;
+  padding: 0; 
+  margin: 0;  
+}
+
+.highlight {
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+
+#home {
+  padding-top: 0;
+}
