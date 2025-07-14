@@ -66,8 +66,8 @@ function Result() {
           <div className="image-section">
             <div className="image-container">
               <img 
-                src={resultData.originalImage} 
-                alt="Processed X-ray image" 
+                src={resultData.resultImage} 
+                alt="Processed X-ray image with overlay" 
                 className="xray-image"
               />
               {/* No detection overlays - removed completely */}
