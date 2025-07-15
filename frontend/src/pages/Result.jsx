@@ -23,7 +23,7 @@ function Result() {
     
     // Create a temporary link to download the image
     const link = document.createElement('a');
-    link.href = resultData.originalImage;
+    link.href = resultData.resultImage;
     link.download = `processed-xray-${resultData.fileName}`;
     document.body.appendChild(link);
     link.click();
