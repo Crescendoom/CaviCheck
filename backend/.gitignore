@@ -1,2 +1,25 @@
-model/*.pth
-model/*.pt
+# PyTorch models (LARGE FILES)
+model/
+*.pth
+*.pt
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+.env.local
+
+# Data and uploads
+uploads/
+temp/
+
+# Logs
+*.log
