@@ -48,7 +48,20 @@ fetch('http://localhost:8000/uploadfiles/', {
   body: formData,
 })
   .then(async (res) => {
-    if (!res.ok) throw new Error('Processing failed');
+  if (!res.ok) {
+    // Try to parse and show the backend error message
+    let errorMsg = "Processing failed.";
+    try {
+      const errorData = await res.json();
+      errorMsg = errorData.error || errorMsg;
+    } catch (e) {
+      // If response is not JSON, keep default errorMsg
+    }
+    alert(errorMsg);
+    setIsProcessing(false);
+    setUploadedFile(null); // <-- Add this line
+    return;
+  }
     const result = await res.json();
     const resultImage = "data:image/png;base64," + result.image;
     const origReader = new FileReader();
@@ -70,7 +83,7 @@ fetch('http://localhost:8000/uploadfiles/', {
     alert("Error: Could not process the image. The backend may not be running or the model is not loaded.");
     setIsProcessing(false);
   });
-};
+}
 
   return (
     <div className="caries-detection">
