@@ -6,3 +6,4 @@ numpy
 python-multipart
 matplotlib
 pillow
+segmentation-models-pytorch

@@ -9,6 +9,14 @@ from fastapi.responses import JSONResponse
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import segmentation_models_pytorch as smp
+from PIL import Image
+
+def is_likely_xray(img_rgb):
+    gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
+    diff = np.abs(img_rgb[:,:,0] - gray) + np.abs(img_rgb[:,:,1] - gray) + np.abs(img_rgb[:,:,2] - gray)
+    mean_diff = np.mean(diff)
+    print("Mean grayscale diff:", mean_diff)  # Debug
+    return mean_diff < 10  # Adjust threshold as needed
 
 # === Load Model ===
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -44,6 +52,9 @@ async def upload_image(file: UploadFile = File(...)):
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
         img = cv2.resize(img, (640, 640))
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+        if not is_likely_xray(img_rgb):
+            return JSONResponse(status_code=400, content={"error": "Uploaded image does not appear to be a dental X-ray."})
 
         input_img = img_rgb.astype(np.float32) / 255.0
         input_tensor = torch.tensor(input_img).permute(2, 0, 1).unsqueeze(0).to(device)
