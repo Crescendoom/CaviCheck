@@ -29,15 +29,16 @@ def download_model():
     
     if not model_path.exists():
         print("📥 Downloading AI model...")
-        # Replace with your Google Drive direct download link
-        model_url = "https://drive.google.com/uc?export=download&id=1WPh9y9-_MCnfnxsCxfBXVkmCKsYm8UIJ"
+        # Updated URL with confirmation for large files
+        model_url = "https://drive.google.com/uc?export=download&id=1WPh9y9-_MCnfnxsCxfBXVkmCKsYm8UIJ&confirm=1"
         
         response = requests.get(model_url, stream=True)
         response.raise_for_status()
         
         with open(model_path, 'wb') as f:
             for chunk in response.iter_content(chunk_size=8192):
-                f.write(chunk)
+                if chunk:
+                    f.write(chunk)
         print("✅ Model downloaded!")
     
     return str(model_path)
