@@ -57,13 +57,21 @@ model = smp.Unet(
 # Download and load model
 try:
     model_path = download_model()
-    model.load_state_dict(torch.load(model_path, map_location=device))
+    # Use weights_only=False for newer PyTorch versions
+    model.load_state_dict(torch.load(model_path, map_location=device, weights_only=False))
     model.eval()
     print("✅ Model loaded successfully!")
 except Exception as e:
     print(f"❌ Error loading model: {e}")
-    raise e
-
+    # Fallback: try with weights_only=True
+    try:
+        model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
+        model.eval()
+        print("✅ Model loaded successfully with weights_only=True!")
+    except Exception as e2:
+        print(f"❌ Both loading methods failed: {e2}")
+        raise e2
+    
 # === FastAPI App ===
 app = FastAPI(title="CaviCheck API", description="AI-powered dental caries detection")
 
