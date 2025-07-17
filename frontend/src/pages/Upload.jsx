@@ -8,6 +8,11 @@ function Upload() {
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
 
+  // Dynamic API URL based on environment
+  const API_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://cavicheck-backend.onrender.com'  // Replace with your actual Render URL
+    : 'http://localhost:8000';
+
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -37,53 +42,60 @@ function Upload() {
   };
 
   const processAndRedirect = (file) => {
-  setUploadedFile(file);
-  setIsProcessing(true);
+    setUploadedFile(file);
+    setIsProcessing(true);
 
-  const formData = new FormData();
-  formData.append('file', file);
+    const formData = new FormData();
+    formData.append('file', file);
 
-fetch('http://localhost:8000/uploadfiles/', {
-  method: 'POST',
-  body: formData,
-})
-  .then(async (res) => {
-  if (!res.ok) {
-    // Try to parse and show the backend error message
-    let errorMsg = "Processing failed.";
-    try {
-      const errorData = await res.json();
-      errorMsg = errorData.error || errorMsg;
-    } catch (e) {
-      // If response is not JSON, keep default errorMsg
-    }
-    alert(errorMsg);
-    setIsProcessing(false);
-    setUploadedFile(null); // <-- Add this line
-    return;
-  }
-    const result = await res.json();
-    const resultImage = "data:image/png;base64," + result.image;
-    const origReader = new FileReader();
-    origReader.onloadend = () => {
-      const originalImage = origReader.result;
-      const resultData = {
-        originalImage,
-        resultImage,
-        fileName: file.name,
-        analysisText: result.status || "Analysis complete. Please consult a dental professional for details.",
-        hasDetection: result.hasDetection
-      };
-      sessionStorage.setItem('cariesResult', JSON.stringify(resultData));
-      navigate('/result');
-    };
-    origReader.readAsDataURL(file);
-  })
-  .catch(() => {
-    alert("Error: Could not process the image. The backend may not be running or the model is not loaded.");
-    setIsProcessing(false);
-  });
-}
+    // Updated fetch URL to use dynamic API_URL
+    fetch(`${API_URL}/uploadfiles/`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          // Try to parse and show the backend error message
+          let errorMsg = "Processing failed.";
+          try {
+            const errorData = await res.json();
+            errorMsg = errorData.error || errorMsg;
+          } catch (e) {
+            // If response is not JSON, keep default errorMsg
+          }
+          alert(errorMsg);
+          setIsProcessing(false);
+          setUploadedFile(null);
+          return;
+        }
+        const result = await res.json();
+        const resultImage = "data:image/png;base64," + result.image;
+        const origReader = new FileReader();
+        origReader.onloadend = () => {
+          const originalImage = origReader.result;
+          const resultData = {
+            originalImage,
+            resultImage,
+            fileName: file.name,
+            analysisText: result.status || "Analysis complete. Please consult a dental professional for details.",
+            hasDetection: result.hasDetection
+          };
+          sessionStorage.setItem('cariesResult', JSON.stringify(resultData));
+          navigate('/result');
+        };
+        origReader.readAsDataURL(file);
+      })
+      .catch((error) => {
+        console.error('Upload error:', error);
+        alert(`Error: Could not process the image. Backend URL: ${API_URL}. Please check if the backend is running.`);
+        setIsProcessing(false);
+        setUploadedFile(null);
+      });
+  };
+
+  const removeFile = () => {
+    setUploadedFile(null);
+  };
 
   return (
     <div className="caries-detection">
