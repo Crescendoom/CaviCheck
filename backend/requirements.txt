@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-torch
-opencv-python
-numpy
-python-multipart
-matplotlib
-pillow
-segmentation-models-pytorch
