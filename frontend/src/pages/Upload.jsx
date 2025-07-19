@@ -18,6 +18,11 @@ function Upload() {
     }
   };
 
+  const removeFile = () => {
+    setUploadedFile(null);
+    document.getElementById('file-input').value = null;
+  };
+  
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -40,50 +45,84 @@ function Upload() {
   setUploadedFile(file);
   setIsProcessing(true);
 
-  const formData = new FormData();
-  formData.append('file', file);
-/* Fetch */
-fetch('https://f4e3885ee4fa.ngrok-free.app/uploadfiles/', {
-  method: 'POST',
-  body: formData,
-})
-  .then(async (res) => {
-  if (!res.ok) {
-    // Try to parse and show the backend error message
-    let errorMsg = "Processing failed.";
-    try {
-      const errorData = await res.json();
-      errorMsg = errorData.error || errorMsg;
-    } catch (e) {
-      // If response is not JSON, keep default errorMsg
-    }
-    alert(errorMsg);
-    setIsProcessing(false);
-    setUploadedFile(null); // <-- Add this line
-    return;
-  }
-    const result = await res.json();
-    const resultImage = "data:image/png;base64," + result.image;
-    const origReader = new FileReader();
-    origReader.onloadend = () => {
-      const originalImage = origReader.result;
-      const resultData = {
-        originalImage,
-        resultImage,
-        fileName: file.name,
-        analysisText: result.status || "Analysis complete. Please consult a dental professional for details.",
-        hasDetection: result.hasDetection
-      };
-      sessionStorage.setItem('cariesResult', JSON.stringify(resultData));
-      navigate('/result');
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    const img = new Image();
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
+      let colorDiffSum = 0;
+      const pixelCount = img.width * img.height;
+
+      for (let i = 0; i < imageData.length; i += 4) {
+        const r = imageData[i];
+        const g = imageData[i + 1];
+        const b = imageData[i + 2];
+        const avg = (r + g + b) / 3;
+        colorDiffSum += Math.abs(r - avg) + Math.abs(g - avg) + Math.abs(b - avg);
+      }
+
+      const meanColorDiff = colorDiffSum / pixelCount;
+
+      if (meanColorDiff > 20) {
+        alert("The uploaded image does not appear to be a dental X-ray. Please upload a grayscale image.");
+        setIsProcessing(false);
+        setUploadedFile(null);
+        return;
+      }
+
+      // Continue with fetch if grayscale
+      const formData = new FormData();
+      formData.append('file', file);
+
+      fetch("https://2b6e9b668bdf.ngrok-free.app/uploadfiles/", {
+        method: "POST",
+        body: formData,
+      })
+        .then(async (res) => {
+          if (!res.ok) {
+            let errorMsg = "Processing failed.";
+            try {
+              const errorData = await res.json();
+              errorMsg = errorData.error || errorMsg;
+            } catch (e) {}
+            alert(errorMsg);
+            setIsProcessing(false);
+            setUploadedFile(null);
+            return;
+          }
+
+          const result = await res.json();
+          const resultImage = "data:image/png;base64," + result.image;
+          const origReader = new FileReader();
+          origReader.onloadend = () => {
+            const originalImage = origReader.result;
+            const resultData = {
+              originalImage,
+              resultImage,
+              fileName: file.name,
+              analysisText: result.status || "Analysis complete. Please consult a dental professional for details.",
+              hasDetection: result.hasDetection
+            };
+            sessionStorage.setItem('cariesResult', JSON.stringify(resultData));
+            navigate('/result');
+          };
+          origReader.readAsDataURL(file);
+        })
+        .catch(() => {
+          alert("Error: Could not process the image. The backend may not be running or the model is not loaded.");
+          setIsProcessing(false);
+        });
     };
-    origReader.readAsDataURL(file);
-  })
-  .catch(() => {
-    alert("Error: Could not process the image. The backend may not be running or the model is not loaded.");
-    setIsProcessing(false);
-  });
-}
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+};
 
   return (
     <div className="caries-detection">
