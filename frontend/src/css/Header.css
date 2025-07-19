@@ -6,11 +6,11 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 0 clamp(20px, 10vw, 144px) 0 clamp(20px, 5vw, 72px);
-  position: fixed; /* Make header sticky */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 1002; /* Higher than overlay */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -22,11 +22,6 @@ header {
 header img {
   width: clamp(40px, 8vw, 60px);
   margin-right: 6px;
-}
-
-.nav-section {
-  display: flex;
-  gap: clamp(20px, 5vw, 72px);
 }
 
 h1 {
@@ -50,6 +45,12 @@ h1 {
   color: #1e3a8a;
 }
 
+/* Desktop Navigation */
+.nav-section {
+  display: flex;
+  gap: clamp(20px, 5vw, 72px);
+}
+
 .nav-link {
   background: none;
   border: none;
@@ -59,13 +60,186 @@ h1 {
   cursor: pointer;
   transition: color 0.3s ease;
   white-space: nowrap;
+  padding: 8px 12px;
+  border-radius: 4px;
 }
 
 .nav-link:hover {
   color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
 }
 
 .nav-link.active {
   color: #007bff;
   font-weight: bold;
+}
+
+/* Hamburger Menu Button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1003; /* Highest z-index */
+  position: relative;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #333;
+  border-radius: 3px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.hamburger.active span:first-child {
+  transform: rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* Menu Overlay - Only show on mobile */
+.menu-overlay {
+  display: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  header {
+    padding: 0 20px;
+    z-index: 1002; /* Keep header above overlay */
+  }
+
+  /* Hide desktop nav */
+  .nav-section {
+    position: fixed;
+    top: 80px;
+    right: -100%;
+    width: 280px;
+    height: calc(100vh - 80px);
+    background-color: #F6F6F6;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    gap: 1rem;
+    transition: right 0.3s ease-in-out;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 1001; /* Below header but above overlay */
+  }
+
+  .nav-section.active {
+    right: 0;
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: left;
+    padding: 1rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .nav-link:last-child {
+    border-bottom: none;
+  }
+
+  /* Show hamburger */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Show overlay when menu is open - ONLY covers content area */
+  .menu-overlay {
+    display: block;
+    position: fixed;
+    top: 80px; /* Start below header */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* Below header and nav */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  /* Show overlay only when menu is active */
+  .nav-section.active ~ .menu-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Adjust logo for mobile */
+  .logo-section h1 {
+    font-size: 1.2rem;
+  }
+
+  header img {
+    width: 40px;
+  }
+}
+
+/* Tablet Styles */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .nav-section {
+    gap: 2rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  header {
+    padding: 0 15px;
+    height: 70px;
+    z-index: 1002; /* Keep header above overlay */
+  }
+
+  .menu-overlay {
+    top: 70px; /* Start below smaller header */
+  }
+
+  .nav-section {
+    top: 70px;
+    height: calc(100vh - 70px);
+    width: 100%;
+    right: -100%;
+  }
+
+  .logo-section h1 {
+    font-size: 1rem;
+  }
+
+  header img {
+    width: 35px;
+  }
+}
+
+/* Smooth animations */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger span,
+  .nav-section,
+  .nav-link,
+  .menu-overlay {
+    transition: none;
+  }
 }
