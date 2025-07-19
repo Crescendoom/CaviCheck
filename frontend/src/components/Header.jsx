@@ -1,104 +1,164 @@
-import '../css/Header.css'; 
-import { useNavigate, useLocation } from 'react-router-dom';
-import { scrollToSection } from '../components/Smooth-Scroll.js'; 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import '../css/Header.css';
 
-function Header() {
-  const navigate = useNavigate();
-  const location = useLocation();
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const location = useLocation();
 
-  // Debounced resize handler for better performance
-  const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  };
-
-  const handleResize = useCallback(
-    debounce(() => {
-      if (window.innerWidth > 768 && isMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    }, 100),
-    [isMenuOpen]
-  );
-
+  // Handle scroll effects
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      
+      // Only do section detection on the main page (home route)
+      if (location.pathname === '/') {
+        const sections = ['home', 'about', 'upload', 'contact-us'];
+        const scrollPosition = window.scrollY + 120;
+        
+        let currentSection = 'home';
+        
+        for (let i = 0; i < sections.length; i++) {
+          const section = document.getElementById(sections[i]);
+          if (section) {
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+              currentSection = sections[i];
+              break;
+            }
+          }
+        }
+        
+        setActiveSection(currentSection);
+      }
     };
-  }, [handleResize]);
 
-  const handleNavigation = (sectionId) => {
-    if (location.pathname !== '/') {
-      navigate('/');
-      setTimeout(() => {
-        scrollToSection(sectionId);
-      }, 100);
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]); // Add location.pathname as dependency
+
+  // Set active section based on current route
+  useEffect(() => {
+    if (location.pathname === '/') {
+      // On home page, keep scroll-based detection
+      setActiveSection('home');
+    } else if (location.pathname === '/result') {
+      // On result page, set upload as active (since that's where they came from)
+      setActiveSection('upload');
     } else {
-      scrollToSection(sectionId);
+      // For other routes, try to match with pathname
+      const pathToSection = {
+        '/': 'home',
+        '/about': 'about',
+        '/upload': 'upload',
+        '/contact': 'contact-us',
+        '/contact-us': 'contact-us'
+      };
+      
+      setActiveSection(pathToSection[location.pathname] || 'home');
     }
+  }, [location.pathname]);
+
+  // Close menu when route changes
+  useEffect(() => {
     setIsMenuOpen(false);
-  };
+  }, [location]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Updated scroll function to handle both routes and sections
+  const scrollToSection = (sectionId) => {
+    // If we're not on the home page, navigate there first
+    if (location.pathname !== '/') {
+      window.location.href = '/#' + sectionId;
+      return;
+    }
+
+    // If we're on the home page, scroll to section
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const headerHeight = 80;
+      let targetPosition;
+      
+      if (sectionId === 'home') {
+        targetPosition = 0;
+      } else {
+        targetPosition = section.offsetTop - headerHeight + 5;
+      }
+      
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+      
+      setActiveSection(sectionId);
+      closeMenu();
+    } else {
+      console.warn(`Section with id "${sectionId}" not found`);
+    }
+  };
+
+  // Navigation items
+  const navItems = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'upload', label: 'Caries Detection' },
+    { id: 'contact-us', label: 'Contact Us' }
+  ];
+
   return (
     <>
-      <header>
+      <header className={isScrolled ? 'scrolled' : ''}>
         <div className="logo-section">
-          <img src="./logo.png" alt="logo icon" />
-          <h1 className="extra-thick">
-            <span className="cavi-text">Cavi</span>
+          <img src="/logo.png" alt="CaviCheck Logo" />
+          <h1>
+            <span className="cavi-text extra-thick">Cavi</span>
             <span className="check-text">Check</span>
           </h1>
         </div>
 
+        <nav className={`nav-section ${isMenuOpen ? 'active' : ''}`}>
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+              onClick={() => scrollToSection(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
         <button 
           className={`hamburger ${isMenuOpen ? 'active' : ''}`}
           onClick={toggleMenu}
-          aria-label="Toggle menu"
+          aria-label="Toggle navigation menu"
         >
           <span></span>
           <span></span>
           <span></span>
         </button>
-
-        <nav className={`nav-section ${isMenuOpen ? 'active' : ''}`}>
-          <button onClick={() => handleNavigation('top')} className="nav-link">Home</button>
-          <button onClick={() => handleNavigation('about')} className="nav-link">About</button>
-          <button onClick={() => handleNavigation('upload')} className="nav-link">Caries Detection</button>
-          <button onClick={() => handleNavigation('contact-us')} className="nav-link">Contact Us</button>
-        </nav>
       </header>
 
-      {isMenuOpen && (
-        <div 
-          className="menu-overlay" 
-          onClick={() => setIsMenuOpen(false)}
-          style={{
-            position: 'fixed',
-            top: '80px',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 1000
-          }}
-        />
-      )}
+      {/* Menu Overlay */}
+      <div 
+        className={`menu-overlay ${isMenuOpen ? 'active' : ''}`}
+        onClick={closeMenu}
+      />
     </>
-  )
-}
+  );
+};
 
 export default Header;

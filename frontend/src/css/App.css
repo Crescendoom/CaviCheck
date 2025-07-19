@@ -4,34 +4,75 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: Inter, sans-serif;
-  background-color: white;
-  color: black;
-}
-
-html {
-  scroll-behavior: smooth;
+  background-color: transparent;
+  color: #FFFFF0;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
 }
 
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .main-content {
   flex: 1;
-  padding-top: 80px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
 }
 
 .main-content section {
-
   display: flex;
   flex-direction: column;
-  padding: 0; 
-  margin: 0;  
+  padding: 0;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  /* IMPROVED: Better scroll positioning */
+  scroll-margin-top: 85px; /* Slightly more than header height for better alignment */
+}
+
+/* IMPROVED: More precise section positioning */
+#home {
+  padding-top: 80px; /* Exact header height */
+  min-height: calc(100vh - 80px);
+  scroll-margin-top: 0; /* Home doesn't need scroll margin */
+}
+
+#about {
+  min-height: 100vh;
+  padding-top: 0; /* Remove extra padding */
+  scroll-margin-top: 80px; /* Exact header height */
+}
+
+#upload {
+  min-height: 100vh;
+  padding-top: 0; /* Remove extra padding */
+  scroll-margin-top: 80px; /* Exact header height */
+}
+
+#contact-us {
+  min-height: 100vh;
+  padding-top: 0; /* Remove extra padding */
+  scroll-margin-top: 80px; /* Exact header height */
 }
 
 .highlight {
@@ -39,7 +80,74 @@ html {
   font-weight: 700;
 }
 
+/* Ensure all content is above the gradient background */
+header, main, footer {
+  position: relative;
+  z-index: 10;
+}
 
-#home {
-  padding-top: 0;
+/* Responsive container utility */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Responsive breakpoints */
+@media (min-width: 576px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    padding: 0 2.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 767px) {
+  .main-content section {
+    scroll-margin-top: 80px; /* Consistent across mobile */
+  }
+  
+  #home {
+    padding-top: 80px;
+    min-height: calc(100vh - 80px);
+    scroll-margin-top: 0;
+  }
+  
+  #about, #upload, #contact-us {
+    min-height: calc(100vh - 80px);
+    padding-top: 0;
+    scroll-margin-top: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content section {
+    scroll-margin-top: 80px;
+  }
+  
+  #home, #about, #upload, #contact-us {
+    padding-top: 0;
+  }
+  
+  #home {
+    padding-top: 80px; /* Only home needs top padding on mobile */
+  }
 }

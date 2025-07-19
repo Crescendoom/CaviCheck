@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import './css/App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import GradientBackground from './components/GradientBg' // Add this
 import Home from './pages/Home'
 import About from './pages/About'
 import ContactUs from './pages/Contact-Us'
@@ -35,6 +36,7 @@ function App() {
   if (isResultPage) {
     return (
       <div className="app">
+        <GradientBackground /> {/* Add gradient background */}
         <Header />
         <Routes>
           <Route path="/result" element={<Result />} />
@@ -47,6 +49,7 @@ function App() {
   // Normal layout for other pages
   return (
     <div className="app">
+      <GradientBackground /> {/* Add gradient background */}
       <Header />
       <main className="main-content">
         <Routes>

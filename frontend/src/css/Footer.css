@@ -1,16 +1,17 @@
-/* Footer styles */
 footer {
-  background-color: #E8E8F0;
   padding: 15px 0;
   text-align: right;
   width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 footer p {
   margin: 0;
-  padding-right: 40px;
-  font-size: 0.9rem;
-  color: #666;
+  padding-right: clamp(20px, 4vw, 40px);
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  color: #FFFFF0;
+  word-wrap: break-word;
 }
 
 /* Responsive adjustments */
@@ -20,19 +21,27 @@ footer p {
   }
   
   footer p {
-    padding-right: 20px;
-    font-size: 0.8rem;
+    padding-right: clamp(15px, 3vw, 20px);
+    font-size: clamp(0.7rem, 2.5vw, 0.8rem);
   }
 }
 
 @media (max-width: 480px) {
   footer {
     padding: 10px 0;
-    text-align: center; /* Center on mobile */
+    text-align: center;
   }
   
   footer p {
     padding-right: 0;
-    font-size: 0.75rem;
+    font-size: clamp(0.65rem, 3vw, 0.75rem);
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  footer p {
+    font-size: clamp(0.6rem, 3.5vw, 0.7rem);
+    padding: 0 0.5rem;
   }
 }
