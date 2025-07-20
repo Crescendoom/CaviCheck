@@ -25,13 +25,11 @@ header.scrolled {
 .logo-section {
   display: flex;
   align-items: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); 
-  margin-left: 45px; 
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);  
 }
 
 header img {
   width: 50px;
-  margin-right: 10px;
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3)); 
 }
 
@@ -56,7 +54,6 @@ h1 {
 .nav-section {
   display: flex;
   gap: 30px;
-  margin-right: 45px; 
 }
 
 .nav-link {
@@ -64,6 +61,7 @@ h1 {
   border: none;
   color: #FFFFF0;
   font-size: 1.2rem;
+  font-weight: 400;
   cursor: pointer;
   padding: 10px;
   transition: all 0.3s ease;
