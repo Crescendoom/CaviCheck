@@ -38,9 +38,9 @@ function Result() {
     const formData = new FormData();
     formData.append('file', file);
 
-    fetch('https://open-slug-nearby.ngrok-free.app/uploadfiles/', {
-      method: 'POST',
-      body: formData,
+    fetch('/api/uploadfiles/', {
+    method: 'POST',
+    body: formData,
     })
     .then(async (res) => {
       if (!res.ok) {

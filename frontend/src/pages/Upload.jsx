@@ -76,11 +76,11 @@ function Upload() {
           return;
         }
 
-        // 🟢 Send to Vercel Proxy API
+        // 🟢 Send to Vite Proxy API
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch("/api/uploadfiles", {
+        fetch("/api/uploadfiles/", {
           method: "POST",
           body: formData,
         })
