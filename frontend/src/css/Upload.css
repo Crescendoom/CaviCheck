@@ -11,13 +11,16 @@
 }
 
 .upload-container {
-  background: linear-gradient(135deg, #1e3a8a 10%, #1e40af 100%);
-  border-radius: 25px;
-  padding: clamp(20px, 4vw, 40px);
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
+background: linear-gradient(135deg, #1e3a8a 10%, #1e40af 100%);
+border-radius: 25px;
+/* 🔼 Increased padding */
+padding: clamp(35px, 6vw, 70px);
+/* 🔼 Increased max width */
+max-width: 800px;
+width: 100%;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+box-sizing: b
+
 }
 
 .upload-title {

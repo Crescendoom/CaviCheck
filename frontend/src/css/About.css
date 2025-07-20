@@ -21,19 +21,23 @@
 }
 
 .main-title {
-  font-size: clamp(2rem, 6vw, 3.1rem);
+  font-size: clamp(2.4rem, 7vw, 3.8rem);
   font-family: "Oswald", sans-serif;
   font-weight: 500;
   font-style: normal;
   line-height: 1.2;
   color: #FFFFF0;
   margin: 0 auto 2rem;
-  max-width: 1000px;
+
+  /* ✅ Widened to allow 3 lines only */
+  max-width: 1200px;
+
   display: block;
   white-space: normal;
   word-wrap: break-word;
   hyphens: auto;
   padding: 0 1rem;
+
 }
 
 .black-text {
