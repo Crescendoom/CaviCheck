@@ -40,10 +40,6 @@
   color: #FFFFF0;
 }
 
-.highlight {
-  color: #1e3a8a;
-}
-
 .about-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
