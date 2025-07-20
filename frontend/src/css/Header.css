@@ -25,7 +25,6 @@ header.scrolled {
 .logo-section {
   display: flex;
   align-items: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);  
 }
 
 header img {
@@ -93,7 +92,7 @@ h1 {
 }
 
 .nav-link.active::after {
-  width: 85%; 
+  width: 100%; 
 }
 
 
