@@ -25,6 +25,7 @@ header.scrolled {
 .logo-section {
   display: flex;
   align-items: center;
+  padding-left: 45px;
 }
 
 header img {
@@ -53,6 +54,7 @@ h1 {
 .nav-section {
   display: flex;
   gap: 30px;
+  padding-right: 45px;
 }
 
 .nav-link {
