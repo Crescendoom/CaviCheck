@@ -43,7 +43,7 @@ function Upload() {
   const formData = new FormData();
   formData.append('file', file);
 /* Fetch */
-fetch('https://d5e37d96c71d.ngrok-free.app/uploadfiles/', {
+fetch('https://open-slug-nearby.ngrok-free.app/uploadfiles/', {
   method: 'POST',
   body: formData,
 })
