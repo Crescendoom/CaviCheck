@@ -135,6 +135,7 @@
 
 .action-buttons {
   display: flex;
+  flex-wrap: nowrap;
   gap: 0.7rem;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -150,7 +151,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 100px;
+  min-width: 160px;
   white-space: nowrap;
 }
 
@@ -170,7 +171,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 100px;
+  min-width: 160px;
   white-space: nowrap;
 }
 
@@ -330,7 +331,7 @@
   
   .download-btn,
   .upload-again-btn {
-    width: 130px;
+    width: 150px;
     font-size: 0.75rem;
     padding: 0.4rem 0.8rem;
   }
