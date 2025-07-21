@@ -118,6 +118,7 @@
   color: #FFFFF0;
   margin: 0;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .result-description {
@@ -125,8 +126,8 @@
 }
 
 .result-description p {
-  font-size: clamp(1.4rem, 4vw, 1.55rem);
-  line-height: 1.4;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  line-height: 1.2;
   color: #FFFFF0;
   margin: 0;
   text-align: left;
@@ -144,8 +145,8 @@
   color: white;
   border: none;
   border-radius: 10px;
-  padding: 0.6rem 1.2rem;
-  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+  padding: 0.8rem 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -164,8 +165,8 @@
   color: #374151;
   border: 2px solid #d1d5db;
   border-radius: 10px;
-  padding: 0.6rem 1.2rem;
-  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+  padding: 0.8rem 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
