@@ -11,21 +11,18 @@
 }
 
 .upload-container {
-background: linear-gradient(135deg, #1e3a8a 10%, #1e40af 100%);
-border-radius: 25px;
-/* 🔼 Increased padding */
-padding: clamp(35px, 6vw, 70px);
-/* 🔼 Increased max width */
-max-width: 800px;
-width: 100%;
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-box-sizing: b
-
+  background: linear-gradient(135deg, #1e3a8a 10%, #1e40af 100%);
+  border-radius: 25px;
+  padding: clamp(35px, 6vw, 70px);
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
 .upload-title {
   color: white;
-  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  font-size: clamp(1.8rem, 6vw, 2.1rem);
   font-family: "Oswald", sans-serif;
   font-weight: 500;
   font-style: normal;
