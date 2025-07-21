@@ -23,9 +23,9 @@ export const ToastProvider = ({ children }) => {
       {toast && (
         <div style={{
           position: "fixed",
-          top: 30,
+          top: "20%",
           left: "50%",
-          transform: "translateX(-50%)",
+          transform: "translate(-50%, -50%)",
           zIndex: 9999,
           width: 380,
           maxWidth: "95vw"

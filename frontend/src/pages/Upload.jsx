@@ -72,7 +72,7 @@ function Upload() {
         const meanColorDiff = colorDiffSum / pixelCount;
 
         if (meanColorDiff > 20) {
-          showToast("warning", "Invalid Image", "The uploaded image does not appear to be a dental X-ray. Please upload a grayscale image.");
+          showToast("warning", "Invalid Image", "The uploaded image does not appear to be a periapical X-ray. Please upload a dental X-ray");
           setIsProcessing(false);
           setUploadedFile(null);
           return;
@@ -88,7 +88,7 @@ function Upload() {
         })
           .then(async (res) => {
             if (!res.ok) {
-              let errorMsg = "An error occurred while processing your image. Please try again or use a different file.";
+              let errorMsg = "Something went wrong. Please try again.";
               try {
                 const errorData = await res.json();
                 errorMsg = errorData.error || errorMsg;
@@ -117,7 +117,7 @@ function Upload() {
             origReader.readAsDataURL(file);
           })
           .catch(() => {
-            showToast("error", "Server Error", "Could not process the image. The backend server may be offline or the AI model is not loaded.");
+            showToast("error", "Model Error", "AI model not loaded or server offline.");
             setIsProcessing(false);
           });
       };
