@@ -99,7 +99,7 @@
 .details-section {
   padding: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   max-width: 350px;
