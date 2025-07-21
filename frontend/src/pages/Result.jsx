@@ -81,7 +81,7 @@ function Result() {
               } catch (e) {
                 // If response is not JSON, keep default errorMsg
               }
-              alert(errorMsg);
+              showToast("error", "Upload Failed", errorMsg);
               setIsProcessing(false);
               return;
             }
