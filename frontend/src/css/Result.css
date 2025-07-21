@@ -147,11 +147,11 @@
   border: none;
   border-radius: 10px;
   padding: 0.8rem 1.4rem;
-  font-size: clamp(1.2rem, 2vw, 1.4rem);
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 160px;
+  min-width: 140px;
   white-space: nowrap;
 }
 
@@ -167,11 +167,11 @@
   border: 2px solid #d1d5db;
   border-radius: 10px;
   padding: 0.8rem 1.4rem;
-  font-size: clamp(1.2rem, 2vw, 1.4rem);
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 160px;
+  min-width: 140px;
   white-space: nowrap;
 }
 
