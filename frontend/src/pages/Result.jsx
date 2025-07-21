@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '../components/ToastContext';
 import '../css/Result.css';
 
 function Result() {
   const [resultData, setResultData] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
-  const { showToast } = useToast();
 
   useEffect(() => {
     // Get result data from sessionStorage
@@ -59,7 +57,7 @@ function Result() {
         const meanColorDiff = colorDiffSum / pixelCount;
 
         if (meanColorDiff > 20) {
-          showToast("warning", "Invalid Image", "The uploaded image does not appear to be a periapical X-ray. Please upload a dental X-ray");
+          alert("The uploaded image does not appear to be a dental X-ray. Please upload a grayscale image.");
           setIsProcessing(false);
           return;
         }
@@ -74,14 +72,14 @@ function Result() {
         })
           .then(async (res) => {
             if (!res.ok) {
-              let errorMsg = "Something went wrong. Please try again.";
+              let errorMsg = "Processing failed.";
               try {
                 const errorData = await res.json();
                 errorMsg = errorData.error || errorMsg;
               } catch (e) {
                 // If response is not JSON, keep default errorMsg
               }
-              showToast("error", "Upload Failed", errorMsg);
+              alert(errorMsg);
               setIsProcessing(false);
               return;
             }
@@ -104,7 +102,7 @@ function Result() {
             origReader.readAsDataURL(file);
           })
           .catch(() => {
-            showToast("error", "Model Error", "AI model not loaded or server offline.");
+            alert("Error: Could not process the image. The backend may not be running or the model is not loaded.");
             setIsProcessing(false);
           });
       };
