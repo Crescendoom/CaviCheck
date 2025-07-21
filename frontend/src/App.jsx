@@ -3,12 +3,13 @@ import { useEffect } from 'react'
 import './css/App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import GradientBackground from './components/GradientBg' // Add this
+import GradientBackground from './components/GradientBg' 
 import Home from './pages/Home'
 import About from './pages/About'
 import ContactUs from './pages/Contact-Us'
 import Upload from './pages/Upload'
 import Result from './pages/Result'
+import { ToastProvider } from './components/ToastContext'
 
 function App() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function App() {
 
   // Normal layout for other pages
   return (
+    <ToastProvider>
     <div className="app">
       <GradientBackground /> {/* Add gradient background */}
       <Header />
@@ -73,6 +75,7 @@ function App() {
       </main>
       <Footer />
     </div>
+    </ToastProvider>
   )
 }
 

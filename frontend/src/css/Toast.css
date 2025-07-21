@@ -1,79 +1,157 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    border: none;
-    font-family: "Poppins", sans-serif;
-    font-size: 14px;
-}
 body {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
+
 .wrapper {
-    width: 380px;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
+  width: 380px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
 }
+
+/* Base toast styles */
 .toast {
-    width: 100%;
-    height: 80px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 7px;
-    display: grid;
-    grid-template-columns: 1.3fr 6fr 0.5fr;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  min-height: 80px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 7px;
+  display: grid;
+  grid-template-columns: 1.3fr 6fr 0.5fr;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  animation: slideInFade 0.4s ease forwards;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
+
+/* Exit animation class */
+.toast.exiting {
+  animation: slideOutFade 0.4s ease forwards;
+}
+
+/* Font and layout base for all children */
+.toast, .toast * {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
 .toast:not(:last-child) {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
+
+/* Toast types with border and icon color */
 .success {
-    border-left: 8px solid #47D764;
+  border-left: 8px solid #47D764;
 }
 .error {
-    border-left: 8px solid #ff355b;
+  border-left: 8px solid #ff355b;
 }
 .info {
-    border-left: 8px solid #2F86EB;
+  border-left: 8px solid #2F86EB;
 }
 .warning {
-    border-left: 8px solid #FFC021;
+  border-left: 8px solid #FFC021;
 }
+
 .success i {
-    color: #47D764;
+  color: #47D764;
 }
 .error i {
-    color: #ff355b;
+  color: #ff355b;
 }
 .info i {
-    color: #2F86EB;
+  color: #2F86EB;
 }
 .warning i {
-    color: #FFC021;
+  color: #FFC021;
 }
+
+/* Icon and text layout */
 .container-1, .container-2 {
-    align-self: center;
+  align-self: center;
 }
 .container-1 i {
-    font-size: 35px;
+  font-size: 35px;
+}
+.toast-icon-lg {
+  width: 60px;
+  height: 60px;
 }
 .container-2 p:first-child {
-    color: #101020;
-    font-weight: 600;
-    font-size: 16px;
+  color: #101020;
+  font-weight: 600;
+  font-size: 16px;
 }
 .container-2 p:last-child {
-    font-size: 12px;
-    font-weight: 400;
-    color: #656565;
+  font-size: 12px;
+  font-weight: 400;
+  color: #656565;
 }
+
+/* Close button */
 .toast button {
-    align-self: flex-start;
-    background-color: transparent;
-    font-size: 25px;
-    color: #656565;
-    line-height: 0;
-    cursor: pointer;
+  align-self: center;
+  background-color: transparent;
+  border: none;
+  font-size: 25px;
+  color: #656565;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Slide-in and slide-out keyframes */
+@keyframes slideInFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutFade {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 480px) {
+  .wrapper {
+    width: 90%;
+  }
+
+  .toast {
+    grid-template-columns: 1fr 5fr 0.5fr;
+    padding: 15px;
+    min-height: auto;
+  }
+
+  .container-1 i,
+  .toast-icon-lg {
+    font-size: 30px !important;
+    width: 55px;
+    height: 55px;
+  }
+
+  .container-2 p:first-child {
+    font-size: 14px;
+  }
+
+  .container-2 p:last-child {
+    font-size: 11px;
+  }
+
+  .toast button {
+    font-size: 22px;
+  }
 }
