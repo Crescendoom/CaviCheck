@@ -8,7 +8,6 @@ function Result() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(false);
   const [selectedModel, setSelectedModel] = useState('unet');
-  const [pendingFile, setPendingFile] = useState(null);
   const navigate = useNavigate();
   const { showToast } = useToast();
 
@@ -136,15 +135,18 @@ function Result() {
     reader.readAsDataURL(file);
   };
 
+  // CHANGED: Show modal first when Upload Again is clicked
   const handleUploadAgain = () => {
-    document.getElementById('result-file-input').click();
+    setShowModelSelector(true);
   };
 
+  // CHANGED: File selection happens after model is chosen
   const handleFileSelect = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setPendingFile(file);
-      setShowModelSelector(true);
+      processNewFile(file, selectedModel);
+      // Reset file input
+      e.target.value = '';
     }
   };
 
@@ -152,17 +154,17 @@ function Result() {
     setSelectedModel(model);
   };
 
+  // CHANGED: Confirm button now opens file picker
   const handleConfirmUpload = () => {
-    if (pendingFile) {
-      processNewFile(pendingFile, selectedModel);
-      setPendingFile(null);
-    }
+    setShowModelSelector(false);
+    // Trigger file input after model is selected
+    setTimeout(() => {
+      document.getElementById('result-file-input').click();
+    }, 100);
   };
 
   const handleCancelUpload = () => {
     setShowModelSelector(false);
-    setPendingFile(null);
-    document.getElementById('result-file-input').value = '';
   };
 
   if (!resultData) {
@@ -210,7 +212,7 @@ function Result() {
                 Cancel
               </button>
               <button onClick={handleConfirmUpload} className="confirm-btn">
-                Process Image
+                Choose Image
               </button>
             </div>
           </div>
