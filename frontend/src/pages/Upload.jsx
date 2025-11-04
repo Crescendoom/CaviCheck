@@ -92,7 +92,7 @@ function Upload() {
         formData.append('model', selectedCategory); // Directly use 'unet' or 'mask2former'
 
         // POST to the backend dispatch endpoint
-        fetch("/api/upload/", {
+        fetch("/api/uploadfiles/", {
           method: "POST",
           body: formData,
         })
