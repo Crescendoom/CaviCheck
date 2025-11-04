@@ -183,7 +183,7 @@ function Result() {
       {showModelSelector && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2 className="modal-title">Select AI Model</h2>
+            <h2 className="modal-title">Select Model</h2>
             <p className="modal-description">Choose which model to use for analysis</p>
             
             <div className="model-selector">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../css/Header.css';
 
 const Header = () => {
@@ -7,6 +7,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Handle scroll effects
   useEffect(() => {
@@ -41,18 +42,15 @@ const Header = () => {
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname]); // Add location.pathname as dependency
+  }, [location.pathname]);
 
   // Set active section based on current route
   useEffect(() => {
     if (location.pathname === '/') {
-      // On home page, keep scroll-based detection
       setActiveSection('home');
     } else if (location.pathname === '/result') {
-      // On result page, set upload as active (since that's where they came from)
       setActiveSection('upload');
     } else {
-      // For other routes, try to match with pathname
       const pathToSection = {
         '/': 'home',
         '/about': 'about',
@@ -76,6 +74,22 @@ const Header = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  // NEW: Handle logo click to return to home
+  const handleLogoClick = () => {
+    if (location.pathname === '/') {
+      // If already on home page, scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      setActiveSection('home');
+    } else {
+      // If on different page, navigate to home
+      navigate('/');
+    }
+    closeMenu();
   };
 
   // Updated scroll function to handle both routes and sections
@@ -121,7 +135,7 @@ const Header = () => {
   return (
     <>
       <header className={isScrolled ? 'scrolled' : ''}>
-        <div className="logo-section">
+        <div className="logo-section" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
           <img src="/logo.png" alt="CaviCheck Logo" />
           <h1>
             <span className="cavi-text extra-thick">Cavi</span>

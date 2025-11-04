@@ -258,3 +258,17 @@ h1 {
     padding: 1.5rem 1rem;
   }
 }
+
+.logo-section {
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.logo-section:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.logo-section:active {
+  transform: scale(0.98);
+}
