@@ -6,6 +6,9 @@ import '../css/Result.css';
 function Result() {
   const [resultData, setResultData] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showModelSelector, setShowModelSelector] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('unet');
+  const [pendingFile, setPendingFile] = useState(null);
   const navigate = useNavigate();
   const { showToast } = useToast();
 
@@ -13,7 +16,12 @@ function Result() {
     // Get result data from sessionStorage
     const storedResult = sessionStorage.getItem('cariesResult');
     if (storedResult) {
-      setResultData(JSON.parse(storedResult));
+      const data = JSON.parse(storedResult);
+      setResultData(data);
+      // Set the model that was used for this result as default
+      if (data.modelUsed) {
+        setSelectedModel(data.modelUsed);
+      }
     } else {
       // If no result data, redirect to home
       navigate('/');
@@ -35,8 +43,9 @@ function Result() {
   };
 
   // Image validation and upload logic
-  const processNewFile = (file) => {
+  const processNewFile = (file, modelToUse) => {
     setIsProcessing(true);
+    setShowModelSelector(false);
 
     const reader = new FileReader();
     reader.onload = function (event) {
@@ -71,6 +80,7 @@ function Result() {
         // Send to backend after validation
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('model', modelToUse); // Send selected model
 
         fetch('/api/uploadfiles/', {
           method: 'POST',
@@ -78,13 +88,17 @@ function Result() {
         })
           .then(async (res) => {
             if (!res.ok) {
+              if (res.status === 503) {
+                showToast("error", "Model Unavailable", "The selected model is not available on the server.");
+                setIsProcessing(false);
+                return;
+              }
+
               let errorMsg = "Something went wrong. Please try again.";
               try {
                 const errorData = await res.json();
                 errorMsg = errorData.error || errorMsg;
-              } catch (e) {
-                // If response is not JSON, keep default errorMsg
-              }
+              } catch (e) {}
               showToast("error", "Upload Failed", errorMsg);
               setIsProcessing(false);
               return;
@@ -99,11 +113,16 @@ function Result() {
                 resultImage,
                 fileName: file.name,
                 analysisText: result.status || "Analysis complete. Please consult a dental professional for details.",
-                hasDetection: result.hasDetection
+                hasDetection: result.hasDetection,
+                modelUsed: modelToUse // Store which model was used
               };
               setResultData(newResultData);
               sessionStorage.setItem('cariesResult', JSON.stringify(newResultData));
               setIsProcessing(false);
+              
+              // Show success toast with model name
+              const modelName = modelToUse === 'unet' ? 'ResNet-50 and U-Net' : 'ConvNext-Tiny and Mask2Former';
+              showToast("info", "Analysis Complete", `Processed with ${modelName}`);
             };
             origReader.readAsDataURL(file);
           })
@@ -124,8 +143,26 @@ function Result() {
   const handleFileSelect = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      processNewFile(file);
+      setPendingFile(file);
+      setShowModelSelector(true);
     }
+  };
+
+  const handleModelSelect = (model) => {
+    setSelectedModel(model);
+  };
+
+  const handleConfirmUpload = () => {
+    if (pendingFile) {
+      processNewFile(pendingFile, selectedModel);
+      setPendingFile(null);
+    }
+  };
+
+  const handleCancelUpload = () => {
+    setShowModelSelector(false);
+    setPendingFile(null);
+    document.getElementById('result-file-input').value = '';
   };
 
   if (!resultData) {
@@ -140,6 +177,46 @@ function Result() {
 
   return (
     <div className="caries-result">
+      {/* Model Selector Modal */}
+      {showModelSelector && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="modal-title">Select AI Model</h2>
+            <p className="modal-description">Choose which model to use for analysis</p>
+            
+            <div className="model-selector">
+              <div 
+                className="category-slider"
+                style={{
+                  transform: selectedModel === 'unet' ? 'translateX(0%)' : 'translateX(100%)'
+                }}
+              />
+              <button 
+                className={`category-btn ${selectedModel === 'unet' ? 'active' : ''}`}
+                onClick={() => handleModelSelect('unet')}
+              >
+                ResNet-50 and U-Net
+              </button>
+              <button 
+                className={`category-btn ${selectedModel === 'mask2former' ? 'active' : ''}`}
+                onClick={() => handleModelSelect('mask2former')}
+              >
+                ConvNext-Tiny and Mask2Former
+              </button>
+            </div>
+
+            <div className="modal-actions">
+              <button onClick={handleCancelUpload} className="cancel-btn">
+                Cancel
+              </button>
+              <button onClick={handleConfirmUpload} className="confirm-btn">
+                Process Image
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="result-container">
         <div className="result-content">
           {/* Left side - Clean X-ray image without any overlays */}
@@ -150,7 +227,6 @@ function Result() {
                 alt="Processed X-ray image with overlay" 
                 className="xray-image"
               />
-              {/* No detection overlays - removed completely */}
             </div>
           </div>
 
