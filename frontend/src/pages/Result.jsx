@@ -22,9 +22,13 @@ function Result() {
 
   const handleDownload = () => {
     if (!resultData) return;
+    
+    // Determine model name for filename
+    const modelName = resultData.modelUsed === 'unet' ? 'ResNet50-UNet' : 'ConvNext-Mask2Former';
+    
     const link = document.createElement('a');
     link.href = resultData.resultImage;
-    link.download = `processed-xray-${resultData.fileName}`;
+    link.download = `${modelName}-processed-${resultData.fileName}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
