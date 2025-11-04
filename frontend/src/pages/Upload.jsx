@@ -7,6 +7,7 @@ function Upload() {
   const [dragActive, setDragActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('unet'); // Changed from 'analysis' to 'unet'
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -47,6 +48,13 @@ function Upload() {
     setUploadedFile(file);
     setIsProcessing(true);
 
+    // Show toast for model selection
+    if (selectedCategory === 'mask2former') {
+      showToast("info", "Mask2Former Model", "Processing with ConvNext-Tiny and Mask2Former.");
+    } else {
+      showToast("info", "U-Net Model", "Processing with ResNet-50 and U-Net.");
+    }
+
     const reader = new FileReader();
     reader.onload = function (event) {
       const img = new Image();
@@ -81,13 +89,23 @@ function Upload() {
         // 🟢 Send to Vite Proxy API
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('model', selectedCategory); // Directly use 'unet' or 'mask2former'
 
-        fetch("/api/uploadfiles/", {
+        // POST to the backend dispatch endpoint
+        fetch("/api/upload/", {
           method: "POST",
           body: formData,
         })
           .then(async (res) => {
             if (!res.ok) {
+              if (res.status === 503) {
+                // Mask2Former not available on server
+                showToast("error", "Model Unavailable", "The selected model is not available on the server.");
+                setIsProcessing(false);
+                setUploadedFile(null);
+                return;
+              }
+
               let errorMsg = "Something went wrong. Please try again.";
               try {
                 const errorData = await res.json();
@@ -109,7 +127,8 @@ function Upload() {
                 resultImage,
                 fileName: file.name,
                 analysisText: result.status || "Analysis complete. Please consult a dental professional for details.",
-                hasDetection: result.hasDetection
+                hasDetection: result.hasDetection,
+                modelUsed: selectedCategory // Changed from 'category' to 'modelUsed'
               };
               sessionStorage.setItem('cariesResult', JSON.stringify(resultData));
               navigate('/result');
@@ -128,6 +147,28 @@ function Upload() {
 
   return (
     <div className="caries-detection">
+      {/* Category Toggle for AI Model Selection */}
+      <div className="category-toggle">
+        <div 
+          className="category-slider"
+          style={{
+            transform: selectedCategory === 'unet' ? 'translateX(0%)' : 'translateX(100%)'
+          }}
+        />
+        <button 
+          className={`category-btn ${selectedCategory === 'unet' ? 'active' : ''}`}
+          onClick={() => setSelectedCategory('unet')}
+        >
+          ResNet-50 and U-Net
+        </button>
+        <button 
+          className={`category-btn ${selectedCategory === 'mask2former' ? 'active' : ''}`}
+          onClick={() => setSelectedCategory('mask2former')}
+        >
+          ConvNext-Tiny and Mask2Former
+        </button>
+      </div>
+
       <div className="upload-container">
         <h1 className="upload-title">Upload Your Periapical X-ray</h1>
 
@@ -136,8 +177,15 @@ function Upload() {
             <div className="processing-animation">
               <div className="spinner"></div>
             </div>
-            <h3 className="processing-title">Processing Your X-ray...</h3>
-            <p className="processing-text">Our AI Model is analyzing your periapical X-ray for caries detection.</p>
+            <h3 className="processing-title">
+              {selectedCategory === 'unet' ? 'Processing with U-Net Model...' : 'Processing with Mask2Former Model...'}
+            </h3>
+            <p className="processing-text">
+              {selectedCategory === 'unet' 
+                ? 'ResNet-50 and U-Net is analyzing your periapical X-ray for caries detection.'
+                : 'ConvNext-Tiny and Mask2Former is analyzing your X-ray for caries detection.'
+              }
+            </p>
           </div>
         ) : (
           <div
