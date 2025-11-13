@@ -135,51 +135,58 @@
 
 .action-buttons {
   display: flex;
-  flex-wrap: nowrap;
   gap: 0.7rem;
-  flex-wrap: wrap;
   justify-content: flex-start;
+  width: 100%;
+}
+
+.download-btn,
+.upload-again-btn {
+  flex: 1;
+  min-width: 0;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .download-btn {
   background-color: #1e40af;
   color: white;
   border: none;
-  border-radius: 10px;
-  padding: 0.8rem 1.4rem;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 140px;
-  white-space: nowrap;
 }
 
-.download-btn:hover {
+.download-btn:hover:not(:disabled) {
   background-color: #1e3a8a;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
+}
+
+.download-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .upload-again-btn {
   background-color: white;
   color: #374151;
   border: 2px solid #d1d5db;
-  border-radius: 10px;
-  padding: 0.8rem 1.4rem;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 140px;
-  white-space: nowrap;
 }
 
-.upload-again-btn:hover {
+.upload-again-btn:hover:not(:disabled) {
   background-color: #f9fafb;
   border-color: #9ca3af;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.upload-again-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Loading container */
@@ -194,179 +201,6 @@
 .loading-container h2 {
   color: #6b7280;
   font-size: clamp(1rem, 2.5vw, 1.2rem);
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .caries-result {
-    height: calc(100vh - 80px);
-    margin-top: 80px;
-  }
-  
-  .result-container {
-    padding: 15px;
-  }
-  
-  .result-content {
-    gap: 1.8rem;
-    max-width: 800px;
-  }
-  
-  .image-container {
-    max-width: 350px;
-    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.15);
-  }
-  
-  .xray-image {
-    max-height: calc(100vh - 220px);
-  }
-}
-
-@media (max-width: 768px) {
-  .caries-result {
-    height: calc(100vh - 80px);
-    margin-top: 80px;
-  }
-  
-  .result-container {
-    padding: 10px;
-  }
-  
-  .result-content {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    text-align: center;
-    max-width: 500px;
-  }
-  
-  .image-container {
-    max-width: 90vw;
-    margin-bottom: 0;
-    box-shadow: 0 5px 18px rgba(30, 58, 138, 0.15);
-  }
-  
-  .xray-image {
-    max-height: calc(100vh - 250px);
-  }
-  
-  .details-section {
-    max-width: 90vw;
-    text-align: center;
-  }
-  
-  .result-header {
-    text-align: center;
-  }
-  
-  .result-description p {
-    text-align: center;
-  }
-  
-  .action-buttons {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .caries-result {
-    height: calc(100vh - 80px);
-    margin-top: 80px;
-  }
-  
-  .result-container {
-    padding: 8px;
-  }
-  
-  .result-content {
-    gap: 1.2rem;
-    max-width: 95vw;
-  }
-  
-  .image-container {
-    padding: 0.8rem;
-    max-width: 95vw;
-    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
-  }
-  
-  .xray-image {
-    max-height: calc(100vh - 280px);
-  }
-  
-  .action-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  
-  .download-btn,
-  .upload-again-btn {
-    width: 150px;
-    padding: 0.5rem 1rem;
-  }
-}
-
-@media (max-width: 320px) {
-  .caries-result {
-    height: calc(100vh - 80px);
-    margin-top: 80px;
-  }
-  
-  .result-container {
-    padding: 5px;
-  }
-  
-  .result-content {
-    gap: 1rem;
-    max-width: 98vw;
-  }
-  
-  .image-container {
-    padding: 0.6rem;
-    box-shadow: 0 3px 12px rgba(30, 58, 138, 0.15);
-  }
-  
-  .xray-image {
-    max-height: calc(100vh - 320px);
-  }
-  
-  .download-btn,
-  .upload-again-btn {
-    width: 150px;
-    font-size: 0.75rem;
-    padding: 0.4rem 0.8rem;
-  }
-}
-
-/* Landscape images specific adjustments */
-@media (orientation: landscape) and (max-height: 600px) {
-  .caries-result {
-    height: calc(100vh - 80px);
-    margin-top: 80px;
-  }
-  
-  .result-container {
-    padding: 10px;
-  }
-  
-  .xray-image {
-    max-height: calc(100vh - 180px);
-  }
-  
-  .result-content {
-    gap: 1rem;
-  }
-  
-  .image-container {
-    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
-  }
-  
-  .result-title {
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  }
-  
-  .result-description p {
-    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
-  }
 }
 
 /* Modal Overlay */
@@ -514,7 +348,208 @@
   box-shadow: 0 4px 12px rgba(2, 76, 170, 0.3);
 }
 
-/* Responsive */
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 15px;
+  }
+  
+  .result-content {
+    gap: 1.8rem;
+    max-width: 800px;
+  }
+  
+  .image-container {
+    max-width: 350px;
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 220px);
+  }
+}
+
+@media (max-width: 768px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 10px;
+  }
+  
+  .result-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+    max-width: 500px;
+  }
+  
+  .image-container {
+    max-width: 90vw;
+    margin-bottom: 0;
+    box-shadow: 0 5px 18px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 250px);
+  }
+  
+  .details-section {
+    max-width: 90vw;
+    text-align: center;
+  }
+  
+  .result-header {
+    text-align: center;
+  }
+  
+  .result-description p {
+    text-align: center;
+  }
+  
+  .action-buttons {
+    justify-content: center;
+    gap: 0.8rem;
+  }
+  
+  .download-btn,
+  .upload-again-btn {
+    padding: 0.75rem 0.8rem;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 8px;
+  }
+  
+  .result-content {
+    gap: 1.2rem;
+    max-width: 95vw;
+  }
+  
+  .image-container {
+    padding: 0.8rem;
+    max-width: 95vw;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 280px);
+  }
+  
+  .action-buttons {
+    flex-direction: row;
+    gap: 0.6rem;
+    max-width: 100%;
+  }
+  
+  .download-btn,
+  .upload-again-btn {
+    padding: 0.7rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .action-buttons {
+    gap: 0.5rem;
+  }
+  
+  .download-btn,
+  .upload-again-btn {
+    padding: 0.65rem 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 5px;
+  }
+  
+  .result-content {
+    gap: 1rem;
+    max-width: 98vw;
+  }
+  
+  .image-container {
+    padding: 0.6rem;
+    box-shadow: 0 3px 12px rgba(30, 58, 138, 0.15);
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 320px);
+  }
+  
+  .download-btn,
+  .upload-again-btn {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Landscape images specific adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+  .caries-result {
+    height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
+  
+  .result-container {
+    padding: 10px;
+  }
+  
+  .xray-image {
+    max-height: calc(100vh - 180px);
+  }
+  
+  .result-content {
+    gap: 1rem;
+  }
+  
+  .image-container {
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+  }
+  
+  .result-title {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  }
+  
+  .result-description p {
+    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+  }
+  
+  .action-buttons {
+    gap: 0.6rem;
+  }
+  
+  .download-btn,
+  .upload-again-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Modal Responsive */
 @media (max-width: 600px) {
   .modal-content {
     padding: 30px 20px;
