@@ -13,7 +13,7 @@ function Result() {
 
   useEffect(() => {
     // Get result data from sessionStorage
-    const storedResult = sessionStorage.getItem('cariesResult');
+    const storedResult = sessionStorage.getItem('status');
     if (storedResult) {
       const data = JSON.parse(storedResult);
       setResultData(data);
@@ -116,7 +116,7 @@ function Result() {
                 modelUsed: modelToUse // Store which model was used
               };
               setResultData(newResultData);
-              sessionStorage.setItem('cariesResult', JSON.stringify(newResultData));
+              sessionStorage.setItem('status', JSON.stringify(newResultData));
               setIsProcessing(false);
               
               // Show success toast with model name
