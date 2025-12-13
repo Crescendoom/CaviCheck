@@ -241,7 +241,11 @@ function Result() {
             </div>
 
             <div className="result-description">
-              <p>{isProcessing ? 'Please wait while we analyze your new X-ray.' : resultData.analysisText}</p>
+              {isProcessing ? (
+                  <p>Please wait while we analyze your new X-ray.</p>
+                ) : (
+                  <p dangerouslySetInnerHTML={{ __html: resultData.analysisText }} />
+                )}
             </div>
 
             <div className="action-buttons">
