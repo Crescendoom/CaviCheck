@@ -111,22 +111,9 @@ function Result() {
                 originalImage,
                 resultImage,
                 fileName: file.name,
-
-                // CDSS text (already correct)
-                analysisText: result.status,
-
-                // Core decision flag
-                hasDetection: result.decision_support?.recommended_flag ?? result.hasDetection,
-
-                // CDSS evidence (NEW)
-                fusionConfidence: result.decision_support?.fusion_confidence,
-                classifierConfidence: result.decision_support?.classifier_confidence,
-                segmentationHasCavity: result.decision_support?.segmentation_has_cavity,
-                detectionPercentage: result.decision_support?.detection_percentage,
-                maxRegionConfidence: result.decision_support?.max_region_confidence,
-                fusionRule: result.decision_support?.fusion_rule,
-
-                modelUsed: modelToUse
+                analysisText: result.status || "Analysis complete. Please consult a dental professional for details.",
+                hasDetection: result.hasDetection,
+                modelUsed: modelToUse // Store which model was used
               };
               setResultData(newResultData);
               sessionStorage.setItem('cariesResult', JSON.stringify(newResultData));
