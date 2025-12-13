@@ -127,7 +127,7 @@
 
 .result-description p {
   font-size: clamp(1rem, 3vw, 1.2rem);
-  line-height: 1.2;
+  line-height: 1.6;
   color: #FFFFF0;
   margin: 0;
   text-align: left;
