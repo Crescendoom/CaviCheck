@@ -2,9 +2,7 @@
 
 AI-powered dental caries detection system for periapical X-ray images.  Helps dental professionals detect cavities with deep learning-based classification and visual segmentation.
 
-## 🔗 Live Demo
-
-**[Try CaviCheck →](https://cavi-check.vercel.app/)**
+🔗 <a href="https://cavi-check.vercel.app/" target="_blank">Open CaviCheck</a>
 
 ## ✨ Features
 
